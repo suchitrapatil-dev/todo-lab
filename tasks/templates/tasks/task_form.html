@@ -1,0 +1,34 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}{% if is_edit %}Edit Task{% else %}New Task{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h1>{% if is_edit %}Edit Task{% else %}New Task{% endif %}</h1>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+      {{ form.title }}
+      {{ form.title.errors }}
+
+      <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+      {{ form.description }}
+      {{ form.description.errors }}
+
+      <label for="{{ form.completed.id_for_label }}">{{ form.completed }} {{ form.completed.label }}</label>
+      {{ form.completed.errors }}
+
+      <p style="margin-top:16px">
+        <button type="submit" class="btn btn-primary">Save</button>
+        {% if is_edit %}
+          <a class="btn btn-light" href="{% url 'tasks:task_detail' task.pk %}">Cancel</a>
+        {% else %}
+          <a class="btn btn-light" href="{% url 'tasks:task_list' %}">Cancel</a>
+        {% endif %}
+      </p>
+    </form>
+  </div>
+{% endblock %}

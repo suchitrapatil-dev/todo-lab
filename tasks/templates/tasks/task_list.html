@@ -1,0 +1,38 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}All Tasks{% endblock %}
+
+{% block content %}
+  <h1>My Todo List</h1>
+
+  {% if tasks %}
+    <table>
+      <thead>
+        <tr><th>Title</th><th>Status</th><th>Created</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          <tr>
+            <td><a href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a></td>
+            <td>
+              {% if task.completed %}
+                <span class="done">Done</span>
+              {% else %}
+                <span class="pending">Not done</span>
+              {% endif %}
+            </td>
+            <td>{{ task.created_at|date:"M d, Y H:i" }}</td>
+            <td>
+              <a href="{% url 'tasks:task_update' task.pk %}">Edit</a> |
+              <a href="{% url 'tasks:task_delete' task.pk %}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="card">
+      <p>No tasks yet! Click <a href="{% url 'tasks:task_create' %}">+ New Task</a> to add your first one.</p>
+    </div>
+  {% endif %}
+{% endblock %}
